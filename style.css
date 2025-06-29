@@ -1,0 +1,316 @@
+/* Variables */
+:root {
+    --primary: #6c5ce7;
+    --secondary: #a29bfe;
+    --accent: #fd79a8;
+    --bg: #f8fafc;
+    --white: #fff;
+    --text: #2d3436;
+    --transition: 0.3s ease;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+/* Navbar */
+.navbar {
+    background: #fff;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.nav-menu {
+    display: flex;
+    gap: 16px;
+}
+
+/* Hero */
+.hero-section {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: var(--white);
+    padding: 100px 0 60px;
+}
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 50px;
+}
+.hero-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+.hero-subtitle {
+    font-size: 18px;
+    margin-bottom: 32px;
+}
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+}
+
+/* Floating Cards */
+.hero-visual {
+    position: relative;
+    height: 400px;
+}
+.floating-card {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 16px 24px;
+    color: #fff;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    animation: float 6s infinite ease-in-out;
+}
+.card-1 { top: 20px; left: 30px; animation-delay: 0s; }
+.card-2 { top: 150px; right: 30px; animation-delay: 2s; }
+.card-3 { bottom: 30px; left: 60px; animation-delay: 4s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Buttons */
+button {
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-primary {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: var(--white);
+}
+.btn-primary:hover {
+    opacity: 0.9;
+}
+.btn-secondary {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    background: var(--white);
+}
+.btn-secondary:hover {
+    background: var(--primary);
+    color: var(--white);
+}
+.btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+}
+.btn-outline:hover {
+    background: var(--white);
+    color: var(--primary);
+}
+.btn-large {
+    padding: 14px 30px;
+    font-size: 16px;
+}
+
+/* Features */
+.features-section {
+    padding: 100px 0;
+}
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 60px;
+}
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+}
+.feature-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    text-align: center;
+}
+.feature-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+.feature-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.feature-card p {
+    color: #555;
+    font-size: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .hero-buttons {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .hero-visual {
+        display: none;
+    }
+    .nav-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* === Responsive Fixes === */
+
+@media (max-width: 1024px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .floating-card {
+        position: relative;
+        margin: 16px auto;
+        animation: none;
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        bottom: auto !important;
+    }
+
+    .hero-visual {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 0;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .nav-menu {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+    }
+
+    .btn-large {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 26px;
+        line-height: 1.3;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+    }
+
+    .feature-card {
+        padding: 24px;
+    }
+
+    .feature-icon {
+        font-size: 28px;
+    }
+
+    .nav-logo {
+        font-size: 20px;
+    }
+
+    .nav-logo i {
+        font-size: 22px;
+    }
+
+    .nav-menu {
+        align-items: stretch;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-outline {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+}
+
