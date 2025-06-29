@@ -620,7 +620,10 @@
             const confirmPassword = formData.get('confirmPassword');
 
             if(password != confirmPassword){
-                return showError("Password doesn't match");
+                showError("Password doesn't match");
+                loginBtn.classList.remove('loading');
+                loginBtn.textContent = 'Sign Up';
+                return;
             }
             loginBtn.classList.add('loading');
             loginBtn.textContent = '';

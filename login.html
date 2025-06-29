@@ -619,7 +619,10 @@
             const typedEmail = localStorage.getItem("campus-email")
             const typedPassword = localStorage.getItem("campus-password")
             if(userType != typedUserType || email != typedEmail || password != typedPassword){
-                return showError("Invalid Credentials");
+                showError("Invalid Credentials");
+                loginBtn.classList.remove('loading');
+                loginBtn.textContent = 'Sign In';
+                return;
             }
 
             await new Promise(resolve => setTimeout(resolve, 1500));
