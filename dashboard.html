@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Recruitment Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 12px 40px 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 25px;
+            width: 250px;
+            max-width: 100%;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .notification-btn {
+            position: relative;
+            padding: 12px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #ff4757;
+            border-radius: 50%;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: #f8f9fa;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        @supports not (display: grid) {
+            .stats-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 25px;
+            }
+            
+            .stat-card {
+                flex: 1;
+                min-width: 280px;
+            }
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            background: var(--gradient);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .stat-change.negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @supports not (display: grid) {
+            .main-content {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+            
+            .main-content > .content-section:first-child {
+                flex: 2;
+                min-width: 300px;
+            }
+            
+            .main-content > .content-section:last-child {
+                flex: 1;
+                min-width: 250px;
+            }
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f4;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border: none;
+            background: #f8f9fa;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .application-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .application-item:hover {
+            background: #f8f9fa;
+            border-color: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .applicant-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .application-details {
+            flex: 1;
+        }
+
+        .applicant-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .application-meta {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-scheduled {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-reviewed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-technical {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-hr {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .event-item {
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .event-item:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .event-item.presentation {
+            border-left-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .event-item.workshop {
+            border-left-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
+        }
+
+        .event-item.interview {
+            border-left-color: #ffc107;
+            background: rgba(255, 193, 7, 0.05);
+        }
+
+        .event-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .event-meta {
+            color: #7f8c8d;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .event-type {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Large Desktop */
+        @media (max-width: 1400px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+
+        /* Desktop */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        /* Tablet */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .logo {
+                justify-content: center;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .search-box {
+                order: 3;
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+                max-width: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 20px;
+            }
+
+            .stat-card {
+                padding: 25px 20px;
+            }
+
+            .stat-value {
+                font-size: 32px;
+            }
+
+            .content-section {
+                padding: 25px 20px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .filter-tabs {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .filter-tab {
+                flex: 1;
+                min-width: 80px;
+                text-align: center;
+            }
+
+            .application-item {
+                padding: 15px;
+                flex-wrap: wrap;
+            }
+
+            .application-details {
+                min-width: 200px;
+            }
+        }
+
+        /* Mobile Large */
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-header {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+
+            .main-content {
+                gap: 20px;
+            }
+
+            .content-section {
+                padding: 20px 15px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .application-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .applicant-avatar {
+                margin-right: 0;
+            }
+
+            .application-details {
+                min-width: auto;
+                width: 100%;
+            }
+
+            .event-item {
+                padding: 15px;
+            }
+
+            .event-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+        /* Mobile Small */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .logo h1 {
+                font-size: 24px;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
+
+            .user-profile span:last-child {
+                display: none;
+            }
+
+            .stats-grid {
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .stat-header {
+                margin-bottom: 15px;
+            }
+
+            .stat-value {
+                font-size: 24px;
+            }
+
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .content-section {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .filter-tabs {
+                grid-template-columns: repeat(3, 1fr);
+                display: grid;
+                gap: 5px;
+            }
+
+            .filter-tab {
+                padding: 6px 12px;
+                font-size: 12px;
+                min-width: auto;
+            }
+
+            .application-item {
+                padding: 12px;
+                border-radius: 12px;
+                margin-bottom: 10px;
+            }
+
+            .applicant-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+
+            .applicant-name {
+                font-size: 14px;
+            }
+
+            .application-meta {
+                font-size: 12px;
+            }
+
+            .status-badge {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+
+            .event-item {
+                padding: 12px;
+                border-radius: 12px;
+                margin-bottom: 10px;
+            }
+
+            .event-title {
+                font-size: 14px;
+            }
+
+            .event-meta {
+                font-size: 12px;
+            }
+
+            .event-type {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+        }
+
+        /* Mobile Extra Small */
+        @media (max-width: 360px) {
+            .header {
+                padding: 12px;
+            }
+
+            .logo h1 {
+                font-size: 20px;
+            }
+
+            .search-box input {
+                font-size: 14px;
+                padding: 10px 35px 10px 12px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .application-item,
+            .event-item {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
+                <h1>Campus Recruit</h1>
+            </div>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="Search students, companies...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <button class="notification-btn">
+                    🔔
+                    <div class="notification-badge"></div>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <span>Admin</span>
+                    <span>⌄</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card" style="--gradient: linear-gradient(135deg, #667eea, #764ba2)">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">2,847</div>
+                        <div class="stat-label">Total Applications</div>
+                        <div class="stat-change positive">📈 +12%</div>
+                    </div>
+                    <div class="stat-icon">👥</div>
+                </div>
+            </div>
+            
+            <div class="stat-card" style="--gradient: linear-gradient(135deg, #28a745, #20c997)">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">47</div>
+                        <div class="stat-label">Active Companies</div>
+                        <div class="stat-change positive">📈 +8%</div>
+                    </div>
+                    <div class="stat-icon">🏢</div>
+                </div>
+            </div>
+            
+            <div class="stat-card" style="--gradient: linear-gradient(135deg, #6f42c1, #e83e8c)">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Scheduled Interviews</div>
+                        <div class="stat-change positive">📈 +24%</div>
+                    </div>
+                    <div class="stat-icon">📅</div>
+                </div>
+            </div>
+            
+            <div class="stat-card" style="--gradient: linear-gradient(135deg, #fd7e14, #ffc107)">
+                <div class="stat-header">
+                    <div>
+                        <div class="stat-value">78%</div>
+                        <div class="stat-label">Placement Rate</div>
+                        <div class="stat-change positive">📈 +5%</div>
+                    </div>
+                    <div class="stat-icon">📊</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Recent Applications -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Applications</h2>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" onclick="setActiveTab(this, 'all')">All</button>
+                        <button class="filter-tab" onclick="setActiveTab(this, 'pending')">Pending</button>
+                        <button class="filter-tab" onclick="setActiveTab(this, 'scheduled')">Scheduled</button>
+                    </div>
+                </div>
+                
+                <div class="applications-list">
+                    <div class="application-item">
+                        <div class="applicant-avatar">SC</div>
+                        <div class="application-details">
+                            <div class="applicant-name">Sarah Chen</div>
+                            <div class="application-meta">Google • Software Engineer</div>
+                            <span class="status-badge status-scheduled">Interview Scheduled</span>
+                        </div>
+                        <div style="color: #7f8c8d; font-size: 14px;">2 hours ago</div>
+                    </div>
+                    
+                    <div class="application-item">
+                        <div class="applicant-avatar">RP</div>
+                        <div class="application-details">
+                            <div class="applicant-name">Raj Patel</div>
+                            <div class="application-meta">Microsoft • Product Manager</div>
+                            <span class="status-badge status-reviewed">Application Reviewed</span>
+                        </div>
+                        <div style="color: #7f8c8d; font-size: 14px;">4 hours ago</div>
+                    </div>
+                    
+                    <div class="application-item">
+                        <div class="applicant-avatar">EJ</div>
+                        <div class="application-details">
+                            <div class="applicant-name">Emily Johnson</div>
+                            <div class="application-meta">Amazon • Data Scientist</div>
+                            <span class="status-badge status-technical">Technical Round</span>
+                        </div>
+                        <div style="color: #7f8c8d; font-size: 14px;">6 hours ago</div>
+                    </div>
+                    
+                    <div class="application-item">
+                        <div class="applicant-avatar">DK</div>
+                        <div class="application-details">
+                            <div class="applicant-name">David Kim</div>
+                            <div class="application-meta">Meta • UX Designer</div>
+                            <span class="status-badge status-hr">HR Round</span>
+                        </div>
+                        <div style="color: #7f8c8d; font-size: 14px;">1 day ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Upcoming Events</h2>
+                </div>
+                
+                <div class="events-list">
+                    <div class="event-item presentation">
+                        <div class="event-title">Google Campus Drive</div>
+                        <div class="event-meta">
+                            <span>🕐 Today, 10:00 AM</span>
+                            <span>📍 Auditorium A</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="event-type">Company Presentation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="event-item workshop">
+                        <div class="event-title">Microsoft Technical Workshop</div>
+                        <div class="event-meta">
+                            <span>🕐 Tomorrow, 2:00 PM</span>
+                            <span>📍 Lab 201</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="event-type">Workshop</span>
+                        </div>
+                    </div>
+                    
+                    <div class="event-item interview">
+                        <div class="event-title">Amazon Interview Day</div>
+                        <div class="event-meta">
+                            <span>🕐 Jul 2, 9:00 AM</span>
+                            <span>📍 Conference Room</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="event-type">Interviews</span>
+                        </div>
+                    </div>
+                    
+                    <div class="event-item presentation">
+                        <div class="event-title">Apple Info Session</div>
+                        <div class="event-meta">
+                            <span>🕐 Jul 5, 11:00 AM</span>
+                            <span>📍 Main Hall</span>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span class="event-type">Info Session</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setActiveTab(element, filter) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            element.classList.add('active');
+            
+            // Add animation to applications
+            const applications = document.querySelectorAll('.application-item');
+            applications.forEach((app, index) => {
+                app.style.animation = 'none';
+                setTimeout(() => {
+                    app.style.animation = `fadeInUp 0.3s ease-out ${index * 0.1}s both`;
+                }, 10);
+            });
+        }
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stat-card, .content-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Add search functionality
+        document.querySelector('.search-box input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const applications = document.querySelectorAll('.application-item');
+            
+            applications.forEach(app => {
+                const name = app.querySelector('.applicant-name').textContent.toLowerCase();
+                const company = app.querySelector('.application-meta').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || company.includes(searchTerm)) {
+                    app.style.display = 'flex';
+                } else {
+                    app.style.display = 'none';
+                }
+            });
+        });
+
+        // Add notification click handler
+        document.querySelector('.notification-btn').addEventListener('click', function() {
+            alert('You have 3 new notifications:\n• New application from Alex Rodriguez\n• Interview scheduled for tomorrow\n• Company profile updated');
+        });
+    </script>
+</body>
+</html>

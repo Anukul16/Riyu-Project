@@ -576,9 +576,7 @@
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 </div>
 
-                <div class="forgot-password">
-                    <a href="#" id="forgotPasswordLink">Forgot Password?</a>
-                </div>
+                
 
                 <button type="submit" class="login-btn" id="loginBtn">
                     Sign In
@@ -602,17 +600,6 @@
         const googleLogin = document.getElementById('googleLogin');
         const linkedinLogin = document.getElementById('linkedinLogin');
 
-        // Demo credentials
-        const demoCredentials = {
-            student: {
-                email: 'student@demo.com',
-                password: 'student123'
-            },
-            recruiter: {
-                email: 'recruiter@demo.com',
-                password: 'recruiter123'
-            }
-        };
 
         // Form submission handler
         loginForm.addEventListener('submit', async (e) => {
@@ -627,21 +614,20 @@
             loginBtn.classList.add('loading');
             loginBtn.textContent = '';
             hideMessages();
-
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Demo authentication
-            if (authenticateUser(userType, email, password)) {
-                showSuccess(`Welcome back! Redirecting to ${userType} dashboard...`);
-                setTimeout(() => {
-                    // In a real app, redirect to dashboard
-                    window.location.href = `/${userType}-dashboard.html`;
-                }, 2000);
-            } else {
-                showError('Invalid credentials. Try demo credentials: student@demo.com / student123');
+            
+            const typedUserType = localStorage.getItem("campus-userType")
+            const typedEmail = localStorage.getItem("campus-email")
+            const typedPassword = localStorage.getItem("campus-password")
+            if(userType != typedUserType || email != typedEmail || password != typedPassword){
+                return showError("Invalid Credentials");
             }
 
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            showSuccess("Login Successfull")
+            setTimeout(()=>{
+                window.location.href = 'dashboard.html'
+            },2000)
             // Reset button state
             loginBtn.classList.remove('loading');
             loginBtn.textContent = 'Sign In';
@@ -672,30 +658,6 @@
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
         }
-
-        // Forgot password handler
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            if (email) {
-                showSuccess('Password reset link sent to your email!');
-            } else {
-                showError('Please enter your email address first.');
-            }
-        });
-
-        // Social login handlers
-        googleLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            showSuccess('Redirecting to Google authentication...');
-            // In a real app, redirect to Google OAuth
-        });
-
-        linkedinLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            showSuccess('Redirecting to LinkedIn authentication...');
-            // In a real app, redirect to LinkedIn OAuth
-        });
 
         // Signup link handler
         signupLink.addEventListener('click', (e) => {

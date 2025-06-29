@@ -608,18 +608,6 @@
         const googleLogin = document.getElementById('googleLogin');
         const linkedinLogin = document.getElementById('linkedinLogin');
 
-        // Demo credentials
-        const demoCredentials = {
-            student: {
-                email: 'student@demo.com',
-                password: 'student123'
-            },
-            recruiter: {
-                email: 'recruiter@demo.com',
-                password: 'recruiter123'
-            }
-        };
-
         // Form submission handler
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -628,29 +616,29 @@
             const userType = formData.get('userType');
             const email = formData.get('email');
             const password = formData.get('password');
+            const fullname = formData.get('fullname');
+            const confirmPassword = formData.get('confirmPassword');
 
-            // Show loading state
+            if(password != confirmPassword){
+                return showError("Password doesn't match");
+            }
             loginBtn.classList.add('loading');
             loginBtn.textContent = '';
             hideMessages();
 
-            // Simulate API call delay
             await new Promise(resolve => setTimeout(resolve, 1500));
 
-            // Demo authentication
-            if (authenticateUser(userType, email, password)) {
-                showSuccess(`Welcome back! Redirecting to ${userType} dashboard...`);
-                setTimeout(() => {
-                    // In a real app, redirect to dashboard
-                    window.location.href = `/${userType}-dashboard.html`;
-                }, 2000);
-            } else {
-                showError('Invalid credentials. Try demo credentials: student@demo.com / student123');
-            }
+            localStorage.setItem('campus-userType', userType);
+            localStorage.setItem('campus-email', email);
+            localStorage.setItem('campus-password', password);
+            localStorage.setItem('campus-fullname', fullname);
 
-            // Reset button state
+            showSuccess("Signup Successfull");
+            setTimeout(()=>{
+                window.location.href='login.html'
+            },2000)
             loginBtn.classList.remove('loading');
-            loginBtn.textContent = 'Sign In';
+            loginBtn.textContent = 'Sign Up';
         });
 
         // Authentication function
@@ -678,37 +666,6 @@
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
         }
-
-        // Forgot password handler
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            if (email) {
-                showSuccess('Password reset link sent to your email!');
-            } else {
-                showError('Please enter your email address first.');
-            }
-        });
-
-        // Social login handlers
-        googleLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            showSuccess('Redirecting to Google authentication...');
-            // In a real app, redirect to Google OAuth
-        });
-
-        linkedinLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            showSuccess('Redirecting to LinkedIn authentication...');
-            // In a real app, redirect to LinkedIn OAuth
-        });
-
-        // Signup link handler
-        signupLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            // In a real app, redirect to signup page
-            window.location.href = '/signup.html';
-        });
 
         // Input validation and real-time feedback
         const inputs = document.querySelectorAll('input[type="email"], input[type="password"]');
@@ -748,30 +705,6 @@
             input.style.borderColor = '#e2e8f0';
             hideMessages();
         }
-
-        // Auto-fill demo credentials on page load
-        window.addEventListener('load', () => {
-            const userType = document.querySelector('input[name="userType"]:checked').value;
-            const credentials = demoCredentials[userType];
-            
-            setTimeout(() => {
-                document.getElementById('email').value = credentials.email;
-                document.getElementById('password').value = credentials.password;
-                showSuccess('Demo credentials loaded! Click "Sign In" to continue.');
-            }, 1000);
-        });
-
-        // Update demo credentials when user type changes
-        document.querySelectorAll('input[name="userType"]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                const userType = e.target.value;
-                const credentials = demoCredentials[userType];
-                document.getElementById('email').value = credentials.email;
-                document.getElementById('password').value = credentials.password;
-                showSuccess(`${userType.charAt(0).toUpperCase() + userType.slice(1)} demo credentials loaded!`);
-            });
-        });
-
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             // Alt + Enter to submit form
